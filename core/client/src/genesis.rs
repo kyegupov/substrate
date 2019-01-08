@@ -18,10 +18,6 @@
 
 use runtime_primitives::traits::{Block as BlockT, Header as HeaderT, Hash as HashT, Zero};
 
-use std::env;
-use std::fs::File;
-use std::io::prelude::*;
-
 /// Create a genesis block, given the initial storage.
 pub fn construct_genesis_block<
 	Block: BlockT

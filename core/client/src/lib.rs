@@ -66,6 +66,3 @@ pub use crate::leaves::LeafSet;
 
 #[doc(inline)]
 pub use sr_api_macros::{decl_runtime_apis, impl_runtime_apis};
-
-#[macro_use]
-extern crate lazy_static;
