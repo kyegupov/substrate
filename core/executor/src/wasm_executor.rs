@@ -762,7 +762,7 @@ mod tests {
 
 	fn load_test_module() -> Vec<u8> {
 		let mut buffer = Vec::new();
-		let mut f = File::open(env::var("TEST_SUBSTRATE_MODULE_PATH").unwrap()).unwrap();
+		let mut f = File::open(env::var("TEST_SUBSTRATE_MODULE_PATH").expect("System variable TEST_SUBSTRATE_MODULE_PATH")).unwrap();
 		f.read_to_end(&mut buffer).unwrap();
 		buffer
 	}
