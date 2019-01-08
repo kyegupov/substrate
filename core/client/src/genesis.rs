@@ -18,6 +18,10 @@
 
 use runtime_primitives::traits::{Block as BlockT, Header as HeaderT, Hash as HashT, Zero};
 
+use std::env;
+use std::fs::File;
+use std::io::prelude::*;
+
 /// Create a genesis block, given the initial storage.
 pub fn construct_genesis_block<
 	Block: BlockT
@@ -51,7 +55,18 @@ mod tests {
 	use primitives::{Blake2Hasher, ed25519::{Public, Pair}};
 	use hex::*;
 
-	native_executor_instance!(Executor, test_client::runtime::api::dispatch, test_client::runtime::native_version, include_bytes!("../../test-runtime/wasm/target/wasm32-unknown-unknown/release/substrate_test_runtime.compact.wasm"));
+	fn load_test_runtime() -> Vec<u8> {
+		let mut buffer = Vec::new();
+		let mut f = File::open(env::var("TEST_SUBSTRATE_RUNTIME_PATH").unwrap()).unwrap();
+		f.read_to_end(&mut buffer).unwrap();
+		buffer
+	}
+
+	lazy_static! {
+		static ref TEST_RUNTIME: Vec<u8> = load_test_runtime();
+    }	
+
+	native_executor_instance!(Executor, test_client::runtime::api::dispatch, test_client::runtime::native_version, &TEST_RUNTIME);
 
 	fn executor() -> executor::NativeExecutor<Executor> {
 		NativeExecutionDispatch::new()

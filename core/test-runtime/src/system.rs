@@ -264,8 +264,20 @@ mod tests {
 	use substrate_executor::WasmExecutor;
 	use hex_literal::{hex, hex_impl};
 
-	const WASM_CODE: &'static [u8] =
-			include_bytes!("../wasm/target/wasm32-unknown-unknown/release/substrate_test_runtime.compact.wasm");
+	use std::env;
+	use std::fs::File;
+	use std::io::prelude::*;
+
+	fn load_test_runtime() -> Vec<u8> {
+		let mut buffer = Vec::new();
+		let mut f = File::open(env::var("TEST_SUBSTRATE_RUNTIME_PATH").unwrap()).unwrap();
+		f.read_to_end(&mut buffer).unwrap();
+		buffer
+	}
+
+	lazy_static! {
+    	static ref WASM_CODE: Vec<u8> = load_test_runtime();
+	}
 
 	fn new_test_ext() -> TestExternalities<Blake2Hasher> {
 		TestExternalities::new(map![
@@ -325,6 +337,8 @@ mod tests {
 		with_externalities(&mut t, || {
 			assert_eq!(balance_of(Keyring::Alice.to_raw_public().into()), 111);
 			assert_eq!(balance_of(Keyring::Bob.to_raw_public().into()), 0);
+			let storage_root = BlakeTwo256::storage_root();
+			println!("{:?}", storage_root);
 		});
 
 		let b = Block {

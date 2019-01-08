@@ -16,6 +16,7 @@ primitives = { package = "substrate-primitives", path = "../../core/primitives" 
 trie = { package = "substrate-trie", path = "../../core/trie" }
 node-primitives = { path = "../primitives" }
 node-runtime = { path = "../runtime" }
+lazy_static = "1.0"
 
 [dev-dependencies]
 keyring = { package = "substrate-keyring", path = "../../core/keyring" }
