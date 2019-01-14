@@ -21,6 +21,10 @@
 #[macro_use]
 extern crate srml_support as runtime_support;
 
+#[cfg(test)]
+#[macro_use]
+extern crate lazy_static;
+
 #[cfg(feature = "std")] pub mod genesismap;
 pub mod system;
 

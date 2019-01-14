@@ -236,7 +236,6 @@ impl_function_executor!(this: FunctionExecutor<'e, E>,
 			key_len as usize
 		).map_err(|_| UserError("Invalid attempt to determine key in ext_get_allocated_storage"))?;
 		let maybe_value = this.ext.storage(&key);
-		println!("ext-get-all-stor {:?}", &key);
 
 		debug_trace!(target: "wasm-trace", "*** Getting storage: {} == {}   [k={}]",
 			if let Some(_preimage) = this.hash_lookup.get(&key) {
@@ -366,7 +365,6 @@ impl_function_executor!(this: FunctionExecutor<'e, E>,
 		}
 	},
 	ext_storage_root(result: *mut u8) => {
-		println!("Setting storage root");
 		let r = this.ext.storage_root();
 		this.memory.set(result, r.as_ref()).map_err(|_| UserError("Invalid attempt to set memory in ext_storage_root"))?;
 		Ok(())
